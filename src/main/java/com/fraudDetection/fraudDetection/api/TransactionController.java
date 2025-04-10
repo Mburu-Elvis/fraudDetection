@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/v1")
-public class TransactionsController {
+public class TransactionController {
     @Autowired
     private MessageProducer messageProducer;
 
