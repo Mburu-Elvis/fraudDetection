@@ -1,5 +1,6 @@
 package com.fraudDetection.fraudDetection.config;
 
+import com.fraudDetection.fraudDetection.dto.TransationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -7,10 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageProducer {
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private static final String TOPIC = "fraud-detection";
 
-    public void sendMessage(String topic, String message) {
-        kafkaTemplate.send(topic, message);
+    @Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    public void sendTransaction(TransationRequest transationRequest) {
+        kafkaTemplate.send(TOPIC, transationRequest.getTransactionId(), transationRequest);
     }
 }

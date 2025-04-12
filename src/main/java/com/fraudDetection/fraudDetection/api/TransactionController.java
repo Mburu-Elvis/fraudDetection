@@ -1,11 +1,14 @@
 package com.fraudDetection.fraudDetection.api;
 
 import com.fraudDetection.fraudDetection.config.MessageProducer;
+import com.fraudDetection.fraudDetection.dto.TransationRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/v1")
@@ -14,8 +17,8 @@ public class TransactionController {
     private MessageProducer messageProducer;
 
     @PostMapping("/transactions")
-    public String processTransaction(@RequestParam("message") String message) {
-        messageProducer.sendMessage("fraud-detection", message);
-        return "Message sent: " + message;
+    public ResponseEntity<?> processTransaction(@Valid @RequestBody TransationRequest transationRequest) {
+        messageProducer.sendTransaction(transationRequest);
+        return ResponseEntity.ok("Transaction received and pushed to Kafka");
     }
 }
